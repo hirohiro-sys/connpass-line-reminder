@@ -1,0 +1,7 @@
+version: 2
+updates:
+  # 固定した Action の SHA を、新しい版が出たら PR で更新する。
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
