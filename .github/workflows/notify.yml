@@ -15,10 +15,15 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: テスト
+        run: go test ./...
       - name: 明日のイベントを LINE に送る
         env:
           CONNPASS_API_KEY: ${{ secrets.CONNPASS_API_KEY }}
           CONNPASS_NICKNAME: ${{ secrets.CONNPASS_NICKNAME }}
           LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
           LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
-        run: ./scripts/notify.sh
+        run: go run .
