@@ -1,0 +1,24 @@
+name: notify
+
+on:
+  schedule:
+    # 毎日 20:00 JST（11:00 UTC）。Memotion の予定の前日通知と同じ時刻。GitHub の都合で数分〜十数分遅れることがある。
+    - cron: "0 11 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: 明日のイベントを LINE に送る
+        env:
+          CONNPASS_API_KEY: ${{ secrets.CONNPASS_API_KEY }}
+          CONNPASS_NICKNAME: ${{ secrets.CONNPASS_NICKNAME }}
+          LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+          LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
+        run: ./scripts/notify.sh
